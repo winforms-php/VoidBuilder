@@ -58,12 +58,12 @@ if (!isset ($argv))
 
         $begin = microtime (true);
 
-        $package = json_decode (file_get_contents (dirname ($params['--app-dir']) .'/qero-packages/packages.json'), true)['github:KRypt0nn/VoidFramework'];
+        $package = json_decode (file_get_contents (dirname ($params['--app-dir']) .'/qero-packages/packages.json'), true)['github:KRypt0nn/VoidFramework']['basefolder'];
 
-        $params['--engine-dir'] = dirname ($params['--app-dir']) .'/qero-packages/KRypt0nn/VoidFramework/'. $package['basefolder'] .'/engine';
+        $params['--engine-dir'] = dirname ($params['--app-dir']) .'/qero-packages/KRypt0nn/VoidFramework/'. $package .'/engine';
         file_put_contents ('params.json', json_encode ($params, JSON_PRETTY_PRINT));
 
-        shell_exec ('"'. dirname ($params['--app-dir']) .'/qero-packages/KRypt0nn/VoidFramework/'. $package['basefolder'] .'/core/WinForms PHP.exe" "'. __FILE__ .'"');
+        shell_exec ('"'. dirname ($params['--app-dir']) .'/qero-packages/KRypt0nn/VoidFramework/'. $package .'/core/VoidCore.exe" "'. __FILE__ .'"');
 
         echo ' Building completed after '. round (microtime (true) - $begin, 6) .' seconds'. PHP_EOL;
         echo '   Saved at '. $params['--output-dir'] .'/build'. PHP_EOL . PHP_EOL;

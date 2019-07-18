@@ -22,7 +22,7 @@ class Builder
         \VoidEngine\dir_copy (CORE_DIR, $outputDir .'/build');
 
         unlink ($outputDir .'/build/script.php');
-        unlink ($outputDir .'/build/WinForms PHP.exe');
+        unlink ($outputDir .'/build/VoidCore.exe');
 
         return VoidEngine::compile ($outputDir .'/build/app.exe', \VoidEngine\text ($iconPath ?? dirname (__DIR__) .'/system/Icon.ico'), \VoidEngine\str_replace_assoc (file_get_contents (dirname (__DIR__) .'/system/preset.php'), [
             '%VoidEngine%' => self::generateCode (self::getReferences (ENGINE_DIR .'/VoidEngine.php')),
