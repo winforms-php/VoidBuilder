@@ -1,5 +1,5 @@
 {
-    "version": "1.1",
+    "version": "1.2",
     "after_install": "after_install.php",
     "requires": [
         "KRypt0nn/ConsoleArgs"

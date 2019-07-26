@@ -31,8 +31,8 @@ if (!isset ($argv))
 
     unlink ('params.json');
     
-    define ('ENGINE_DIR', $params['--engine-dir']);
-    define ('CORE_DIR', dirname (ENGINE_DIR) .'/core');
+    define ('VoidEngine\ENGINE_DIR', $params['--engine-dir']);
+    define ('VoidEngine\CORE_DIR', dirname (ENGINE_DIR) .'/core');
     
     require $params['--engine-dir'] .'/VoidEngine.php';
 }
