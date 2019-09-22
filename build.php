@@ -30,9 +30,13 @@ if (!isset ($argv))
                 $oargv[] = $arg;
             }
     }
-	
-    define ('VoidBuilder\ENGINE_DIR', $params['--engine-dir']);
-    define ('VoidBuilder\CORE_DIR', dirname (ENGINE_DIR) .'/core');
+    
+    if (!defined ('VoidBuilder\ENGINE_DIR'))
+        define ('VoidBuilder\ENGINE_DIR', $params['--engine-dir']);
+
+    if (!defined ('VoidBuilder\CORE_DIR'))
+        define ('VoidBuilder\CORE_DIR', dirname (ENGINE_DIR) .'/core');
+    
 	define ('VoidEngine\CORE_DIR', dirname (ENGINE_DIR) .'/core');
     
     require $params['--engine-dir'] .'/VoidEngine.php';

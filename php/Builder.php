@@ -2,6 +2,9 @@
 
 namespace VoidBuilder;
 
+if (!defined ('VoidBuilder\ENGINE_DIR') && defined ('VoidEngine\ENGINE_DIR'))
+    define ('VoidBuilder\ENGINE_DIR', \VoidEngine\ENGINE_DIR);
+
 class Builder
 {
     public $appDir;
