@@ -26,7 +26,7 @@ class Builder
         \VoidEngine\dir_copy (dirname ($this->appDir) .'/qero-packages', $outputDir .'/build/qero-packages');
         \VoidEngine\dir_delete ($outputDir .'/build/qero-packages/winforms-php/VoidFramework');
 
-        return EngineAdditions::compile ($outputDir .'/build/app.exe', $iconPath ?? dirname (__DIR__) .'/system/Icon.ico', self::optimizeCode (\VoidEngine\str_replace_assoc (file_get_contents (dirname (__DIR__) .'/system/preset.php'), [
+        return \VoidEngine\EngineAdditions::compile ($outputDir .'/build/app.exe', $iconPath ?? dirname (__DIR__) .'/system/Icon.ico', self::optimizeCode (\VoidEngine\str_replace_assoc (file_get_contents (dirname (__DIR__) .'/system/preset.php'), [
             '%VoidEngine%' => self::generateCode (self::getReferences (ENGINE_DIR .'/VoidEngine.php')),
             '%APP%'        => base64_encode (gzdeflate (serialize ($union ? self::getFiles ($this->appDir) : []), 9))
         ]))/*, null, null, null, null, null, '', '', null, null*/);
