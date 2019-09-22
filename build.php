@@ -51,7 +51,7 @@ try
         if (!file_exists (dirname ($params['--app-dir']) .'/qero-packages/winforms-php/VoidFramework/core/VoidCore.exe'))
             die ("\n Incorrect VoidFramework app path\n");
 
-        if (class_exists ('VoidEngine\VoidEngine'))
+        if (class_exists ('VoidEngine\WFObject'))
         {
             $errors = (new Builder ($params['--app-dir']))
                 ->build ($params['--output-dir'], $params['--icon-path'], !$params['--no-compress']);
