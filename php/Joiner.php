@@ -8,15 +8,17 @@ class File
 
     public function __construct (string $path)
     {
-        if (!is_file ($path))
-            throw new \Exception ('Wrong $path paeam');
-        
         $this->path = $path;
     }
 
     public function toXML (): string
     {
-        return '<File><Type>2</Type><Name>'. basename ($this->path) .'</Name><File>'. $this->path .'</File><ActiveX>False</ActiveX><ActiveXInstall>False</ActiveXInstall><Action>0</Action><OverwriteDateTime>False</OverwriteDateTime><OverwriteAttributes>False</OverwriteAttributes><PassCommandLine>False</PassCommandLine><HideFromDialogs>0</HideFromDialogs></File>';
+        $return = '';
+
+        foreach (glob ($this->path) as $file)
+            $return .= '<File><Type>2</Type><Name>'. basename ($file) .'</Name><File>'. $file .'</File><ActiveX>False</ActiveX><ActiveXInstall>False</ActiveXInstall><Action>0</Action><OverwriteDateTime>False</OverwriteDateTime><OverwriteAttributes>False</OverwriteAttributes><PassCommandLine>False</PassCommandLine><HideFromDialogs>0</HideFromDialogs></File>';
+
+        return $return;
     }
 }
 

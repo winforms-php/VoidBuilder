@@ -11,28 +11,31 @@ class Builder
 
     public function __construct (string $appDir)
     {
-        if (!is_dir ($appDir))
+        if (!file_exists ($appDir))
             throw new \Exception ('Wrong $appDir param');
 
         $this->appDir = $appDir;
     }
 
-    public function build (string $outputDir, string $iconPath = null, bool $union = true): array
+    public function build (string $outputDir, string $iconPath = null): array
     {
         \VoidEngine\dir_clean ($outputDir .'/build');
         \VoidEngine\dir_copy (CORE_DIR, $outputDir .'/build');
 
         unlink ($outputDir .'/build/script.php');
         unlink ($outputDir .'/build/VoidCore.exe');
-        
-        \VoidEngine\dir_clean ($outputDir .'/build/qero-packages');
-        \VoidEngine\dir_copy (dirname ($this->appDir) .'/qero-packages', $outputDir .'/build/qero-packages');
-        \VoidEngine\dir_delete ($outputDir .'/build/qero-packages/winforms-php/VoidFramework');
 
-        return \VoidEngine\EngineAdditions::compile ($outputDir .'/build/app.exe', $iconPath ?? dirname (__DIR__) .'/system/Icon.ico', self::optimizeCode (\VoidEngine\str_replace_assoc (file_get_contents (dirname (__DIR__) .'/system/preset.php'), [
-            '%VoidEngine%' => self::generateCode (self::getReferences (ENGINE_DIR .'/VoidEngine.php')),
-            '%APP%'        => base64_encode (gzdeflate (serialize ($union ? self::getFiles ($this->appDir) : []), 9))
-        ]))/*, null, null, null, null, null, '', '', null, null*/);
+        $output = \VoidEngine\EngineAdditions::compile ($outputDir .'/build/app.exe', $iconPath ?? dirname (__DIR__) .'/system/Icon.ico', self::optimizeCode (str_replace ([
+            '%APP%',
+            '%PHAR_NAME%'
+        ], [
+            base64_encode (gzdeflate (file_get_contents (BUILDER_DIR .'/app.phar'), 9)),
+            uniqid (rand(), true)
+        ], file_get_contents (dirname (__DIR__) .'/system/preset.php')))/*, null, null, null, null, null, '', '', null, null*/);
+
+        unlink (BUILDER_DIR .'/app.phar');
+
+        return $output;
     }
 
     public static function generateCode (array $references, bool $removeNamespaces = true): string
@@ -98,9 +101,20 @@ class Builder
         return $files;
     }
 
-    public static function optimizeCode (string $code): string
+    public static function getPHPFiles (string $path, array $files = []): array
     {
-        $tokens = token_get_all ('<?php '. $code);
+        foreach (array_slice (scandir ($path), 2) as $file)
+            $files = is_dir ($path .'/'. $file) ?
+                self::getPHPFiles ($path .'/'. $file, $files) : (
+                    strtolower (substr ($file, strrpos ($file, '.') + 1)) == 'php' ?
+                    array_merge ($files, [$path .'/'. $file]) : $files);
+
+        return $files;
+    }
+
+    public static function optimizeCode (string $code, bool $addPrefix = true): string
+    {
+        $tokens = token_get_all (($addPrefix ? '<?php ' : '') . $code);
         $return = '';
 
         foreach ($tokens as $id => $token)
@@ -130,6 +144,7 @@ class Builder
                 }
             }
 
-        return substr ($return, 6);
+        return $addPrefix ?
+            substr ($return, 6) : $return;
     }
 }

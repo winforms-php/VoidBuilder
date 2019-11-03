@@ -22,7 +22,9 @@
 
 namespace VoidBuilder;
 
-if (is_dir ('qero-packages'))
+const BUILDER_DIR = __DIR__;
+
+if (file_exists ('qero-packages/autoload.php'))
     require_once 'qero-packages/autoload.php';
 
 require 'php/Builder.php';
