@@ -24,8 +24,29 @@ namespace VoidBuilder;
 
 const BUILDER_DIR = __DIR__;
 
-if (file_exists ('qero-packages/autoload.php'))
-    require_once 'qero-packages/autoload.php';
+$dir = 'qero-packages';
+
+if (!file_exists ($dir))
+	$dir = dirname (__DIR__, 2);
+
+if (file_exists ($dir))
+{
+	$authors = array_slice (scandir ($dir), 2);
+	
+	foreach ($authors as $author)
+		if (strtolower ($author) == 'krypt0nn')
+		{
+			$packages = array_slice (scandir ($dir .'/'. $author), 2);
+			
+			foreach ($packages as $package)
+				if (strtolower ($package) == 'consoleargs')
+				{
+					require_once $dir .'/'. $author .'/'. $package .'/ConsoleArgs.php';
+					
+					break 2;
+				}
+		}
+}
 
 require 'php/Builder.php';
 require 'php/Joiner.php';

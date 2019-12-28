@@ -71,12 +71,12 @@ try
         else
         {
             echo PHP_EOL;
-            echo ' Building ['. dirname (str_replace (dirname ($params['--app-dir'], 2) .'\\', '', $params['--app-dir'])) .']...'. PHP_EOL;
+            echo ' Building ['. basename (dirname (str_replace (dirname ($params['--app-dir'], 2) .'\\', '', $params['--app-dir']))) .']...'. PHP_EOL;
 
             $begin = microtime (true);
 
             $params['--engine-dir'] = dirname ($params['--app-dir']) .'/qero-packages/winforms-php/VoidFramework/engine';
-            file_put_contents ('params.json', json_encode ($params, JSON_PRETTY_PRINT));
+            file_put_contents (__DIR__ .'/params.json', json_encode ($params, JSON_PRETTY_PRINT));
 
             echo ' > Compressing PHP files...'. PHP_EOL;
 
@@ -99,8 +99,11 @@ try
             echo ' > Compressed  '. round ($original_size / 1024, 2) .' kb -> '. round ($compressed_size / 1024, 2) .' kb ('. (100 - round ($compressed_size / $original_size * 100, 2)) .'%)'. PHP_EOL;
             echo ' > Packing application...'. PHP_EOL;
 
-            $phar = new \Phar ('app.phar');
-            $phar->buildFromDirectory (dirname ($params['--app-dir']), '/^(?!(.*qero\-packages\/winforms\-php\/(VoidFramework|VoidBuilder)\/core))(.*)$/i');
+            if (file_exists (__DIR__ .'/app.phar'))
+                unlink (__DIR__ .'/app.phar');
+
+            $phar = new \Phar (__DIR__ .'/app.phar');
+            $phar->buildFromDirectory (dirname ($params['--app-dir']), '/^(?!(.*qero\-packages\/winforms\-php\/VoidFramework\/core|.*qero\-packages\/winforms\-php\/VoidBuilder\/system))(.*)$/i');
             $phar->setStub ($phar->createDefaultStub ('app/start.php'));
 
             foreach ($originals as $php => $content)
