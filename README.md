@@ -7,7 +7,7 @@
 1. Скачайте и распакуйте репозиторий
 2. Скопируйте [**Qero**](https://github.com/KRypt0nn/Qero) в папку сборщика
 3. Установите **Qero**-зависимости
-> php Qero.phar install
+> php qero.phar i
 
 ## Использование
 

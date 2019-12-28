@@ -100,7 +100,7 @@ try
             echo ' > Packing application...'. PHP_EOL;
 
             $phar = new \Phar ('app.phar');
-            $phar->buildFromDirectory (dirname ($params['--app-dir']), '/^(?!(.*qero\-packages\/winforms\-php\/VoidFramework\/core))(.*)$/i');
+            $phar->buildFromDirectory (dirname ($params['--app-dir']), '/^(?!(.*qero\-packages\/winforms\-php\/(VoidFramework|VoidBuilder)\/core))(.*)$/i');
             $phar->setStub ($phar->createDefaultStub ('app/start.php'));
 
             foreach ($originals as $php => $content)
