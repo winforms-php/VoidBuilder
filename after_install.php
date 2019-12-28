@@ -2,6 +2,6 @@
 
 global $index_package;
 
-$index_package->scripts['build-app'] = 'php "%QERO%/qero-packages/winforms-php/VoidBuilder/build.php" --app-dir "%QERO%/app" --output-dir "%QERO%/build"';
+$index_package->scripts['build-app'] = 'php "%QERO%/qero-packages/winforms-php/VoidBuilder/build.php" --app-dir "%QERO%/app" --output-dir "%QERO%"';
 
 unlink (__FILE__);
